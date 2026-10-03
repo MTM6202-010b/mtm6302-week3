@@ -10,7 +10,7 @@ const moodText = document.querySelector("#monster-mood")
 const energyText = document.querySelector("#monster-energy")
 const monsterImage = document.querySelector("#monster-image")
 const monsterCard = document.querySelector("#monster-card")
-const monsterText = document.querySelector("#monster-message")
+const messageText = document.querySelector("#monster-message")
 const certificate = document.querySelector("#certificate")
 const certificateName = document.querySelector("#certificate-name")
 
@@ -50,7 +50,7 @@ certificate.removeAttribute("hidden")
 certificateName.textContent = monsterName.textContent
 
 // 5. Use an energy number and if / else if / else to choose a mood.
-let energy = 80
+let energy = 20
 
 energyText.textContent = energy
 
@@ -76,8 +76,65 @@ function feedMonster(amount){
     }else if (energy < 0){
         energy=0
     }
-    energyText. textContent = energy
+    updateMonster()
 }
+
+function updateMonster(){
+    const mood = getMood(energy)
+    moodText. textContent = mood 
+    energyText. textContent = energy
+
+    monsterCard.classList.remove("is-sleepy", "is-hungry", "is-happy")
+    if (energy < 30){
+        monsterCard.classList.add("is-sleepy")
+        monsterImage.setAttribute("src", "assets/sleepy.svg")
+        monsterImage.setAttribute("alt", "A sleepy green monster with eye closed")
+        messageText.textContent = "Currently buffering. Please send snacks."
+    }else if(energy <70){
+        monsterCard.classList.add("is-hungry")
+        monsterImage.setAttribute("src", "assets/hungry.svg")
+        monsterImage.setAttribute("alt", "An alart green green monster with mouth wide open")
+        messageText.textContent = "Currently buffering. I smell cookies in another browser."
+
+    } else {
+        monsterCard.classList.add("is-happy")
+        monsterImage.setAttribute("src", "assets/happy.svg")
+        monsterImage.setAttribute("alt", "A happy green green monster with a big smile")
+        messageText.textContent = "Enough energy to create chaos on innternet."
+    }
+}
+
+function playMonster (amount){
+    energy -=amount
+    if(energy>100){
+        energy=100
+        console.log("energy is already full")
+
+    } else if (energy < 0){
+        energy=0
+        console.log("energy is already empty")
+    }
+    updateMonster()
+}
+
+function renameMonster(name){
+    monsterName.textContent = name
+    certificateName.textContent = name
+    document.title  += " - " + name
+}
+
+function toggleParty() {
+    monsterCard.classList.toggle("party-mode")
+}
+
+function renameMonster() {
+    energy = 20
+    renameMonster("Mochi")
+    monsterCard.classList.remove("party-mode")
+    updateMonster()
+}
+
+resetMonster()
 
 // 6. Put display updates in updateMonster(). Add feedMonster(amount).
 
